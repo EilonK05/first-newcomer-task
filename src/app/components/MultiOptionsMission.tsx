@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useState, useEffect } from 'react'
 import styles from '../styles/multiOptionMission.module.css'
 
 type ScoreCreterias = {
@@ -17,7 +18,17 @@ type Props = {
   missionCreterias: ScoreCreterias[]
 }
 
+
 const MultiOptionsMission = ({missionID, missionName, missionCreterias}: Props) => {
+  const [chosenOptions, setChosenOptions] = useState<number[]>([]);
+
+  useEffect(() => console.log("HELLO"), [missionCreterias])
+
+  const setActiveButton = (creteriaIndex:number, score:number) => {
+    setChosenOptions([chosenOptions[creteriaIndex] = score])
+  }
+
+
   return (
     <div className={styles.div}>
       <div className={styles.missionHeader}>
@@ -25,10 +36,10 @@ const MultiOptionsMission = ({missionID, missionName, missionCreterias}: Props) 
         <h1>{missionName}</h1>
       </div>
 
-      {missionCreterias.map((creteria, index) => (
-        <div className={styles.missionCreateria} key={index}>
+      {missionCreterias.map((creteria, creteriaIndex) => (
+        <div className={styles.missionCreateria} key={creteriaIndex}>
           <h2 className={styles.missionCreateriaLabel}>{creteria.creteria}</h2>
-          {creteria.scoringOptions.map((scoringOption, index) => (<button className={styles.button} key={index}>{scoringOption.option}</button>))}
+          {creteria.scoringOptions.map((scoringOption, scroingOptionIndex) => (<button className={chosenOptions[creteriaIndex] === scoringOption.score ? styles.buttonActive : styles.button} key={scroingOptionIndex} onClick={() => setActiveButton(creteriaIndex, scoringOption.score)}>{scoringOption.option}</button>))}
       </div>
       ))}
     </div>
